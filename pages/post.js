@@ -2,8 +2,14 @@ import { auth, db } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { defaultConfig } from "next/dist/server/config-shared";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { toast } from "react-toastify";
 
 export default function Post() {
@@ -66,8 +72,10 @@ export default function Post() {
   return (
     <div className="my-20 p-12 shadow-lg rounded-lg max-w-md mx-auto">
       <form onSubmit={submitPost}>
-        <h1 className="text-2xl font-bold">Create a new post</h1>
-        <div>
+        <h1 className="text-2xl font-bold">
+          {post.hasOwnProperty("id") ? "Edit your post" : "Create a new post"}
+        </h1>
+        <div className="py-2">
           <h3 className="text-lg font-medium py-2">Description</h3>
           <textarea
             value={post.description}
