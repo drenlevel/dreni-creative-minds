@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "firebase": "^9.14.0",
@@ -24,6 +25,7 @@
     "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",
     "postcss": "^8.4.17",
+    "prettier": "^2.8.1",
     "tailwindcss": "^3.1.8"
   }
 }

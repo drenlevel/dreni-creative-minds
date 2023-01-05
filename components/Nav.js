@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
-import { auth } from "../utils/firebase-recipes";
-import { useAuthState } from "react-firebase-hooks/auth";
+import Link from 'next/link';
+import { auth } from '../utils/firebase-recipes';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function Nav() {
   const [user, loading] = useAuthState(auth);
@@ -12,7 +12,7 @@ export default function Nav() {
       </Link>
       <ul className="flex item-center gap-10">
         {!user && (
-          <Link href={"/auth/login"}>
+          <Link href={'/auth/login'}>
             <a className="py-2 px-4 text-sm bg-cyan-500 text-white rounded-lg font-medium ml-8">
               Join Now
             </a>

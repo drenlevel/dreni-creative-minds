@@ -1,29 +1,27 @@
-import Message from "../components/message";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { auth, db } from "../utils/firebase-recipes";
-import { toast } from "react-toastify";
+import Message from '../components/message';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { auth, db } from '../utils/firebase-recipes';
+import { toast } from 'react-toastify';
 import {
   arrayUnion,
   doc,
-  getDoc,
   onSnapshot,
-  orderBy,
-  query,
   Timestamp,
   updateDoc,
-} from "firebase/firestore";
+} from 'firebase/firestore';
+import Image from 'next/image';
 
 export default function Details() {
   const router = useRouter();
   const routeData = router.query;
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [allMessage, setAllMessages] = useState([]);
 
   //Submit a message
   const submitMessage = async () => {
     //Check if the user is logged
-    if (!auth.currentUser) return router.push("/auth/login");
+    if (!auth.currentUser) return router.push('/auth/login');
 
     if (!message) {
       console.log(message);
@@ -33,7 +31,7 @@ export default function Details() {
       });
       return;
     }
-    const docRef = doc(db, "posts", routeData.id);
+    const docRef = doc(db, 'recipes', routeData.id);
     await updateDoc(docRef, {
       comments: arrayUnion({
         message,
@@ -42,29 +40,27 @@ export default function Details() {
         time: Timestamp.now(),
       }),
     });
-    setMessage("");
-  };
-
-  //Get Comments
-  const getComments = async () => {
-    const docRef = doc(db, "posts", routeData.id);
-    const unsubscribe = onSnapshot(docRef, (snapshot) => {
-      setAllMessages(snapshot.data().comments);
-    });
-    return unsubscribe;
+    setMessage('');
   };
 
   useEffect(() => {
     if (!router.isReady) return;
-    getComments();
-  }, [router.isReady]);
+
+    const docRef = doc(db, 'recipes', routeData.id);
+    const unsubscribe = onSnapshot(docRef, snapshot => {
+      setAllMessages(snapshot.data().summary);
+    });
+
+    return unsubscribe;
+  }, [routeData.id, router.isReady]);
+
   return (
     <div>
       <Message {...routeData}></Message>
       <div className="my-4">
         <div className="flex">
           <input
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={e => setMessage(e.target.value)}
             type="text"
             value={message}
             placeholder="Send a message 😀"
@@ -79,13 +75,15 @@ export default function Details() {
         </div>
         <div className="py-6">
           <h2 className="font-bold">Comments</h2>
-          {allMessage?.map((message) => (
+          {allMessage?.map(message => (
             <div className="bg-white p-4 my-4 border-2" key={message.time}>
               <div className="flex items-center gap-2 mb-4">
-                <img
+                <Image
                   className="w-10 rounded-full"
                   src={message.avatar}
-                  alt=""
+                  alt="user avatar"
+                  width={800}
+                  height={500}
                 />
                 <h2>{message.userName}</h2>
               </div>
