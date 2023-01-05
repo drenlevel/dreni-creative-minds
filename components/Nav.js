@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { auth } from "../utils/firebase";
+import { auth } from "../utils/firebase-recipes";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Nav() {

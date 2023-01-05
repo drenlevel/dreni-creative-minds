@@ -4,7 +4,7 @@ import {
   signInWithRedirect,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { auth } from "../../utils/firebase";
+import { auth } from "../../utils/firebase-recipes";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
