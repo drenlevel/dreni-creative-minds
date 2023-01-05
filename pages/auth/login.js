@@ -17,7 +17,6 @@ export default function Login() {
   const GoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      debugger;
       route.push("/");
     } catch (error) {
       console.error(error);

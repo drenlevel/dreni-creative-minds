@@ -1,16 +1,17 @@
 import Head from "next/head";
 import Message from "../components/message";
 import { useEffect, useState } from "react";
-import { db } from "../utils/firebase";
+import { db } from "../utils/firebase-recipes";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import Link from "next/link";
 
 export default function Home() {
   //Create a state with all posts
   const [allPosts, setAllPosts] = useState([]);
 
   const getPosts = async () => {
-    const collectionRef = collection(db, "posts");
-    const q = query(collectionRef, orderBy("timestamp", "desc"));
+    const collectionRef = collection(db, "recipes");
+    const q = query(collectionRef, orderBy("id", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       setAllPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
@@ -31,9 +32,16 @@ export default function Home() {
 
       <div className="my-12 text-lg font-meidum">
         <h2>See what other people are saying</h2>
-        {allPosts.map((post) => (
-          <Message key={post.id} age={12} {...post} />
-        ))}
+        {allPosts.map(
+          (post) => (
+            <pre key={post.id}>{JSON.stringify(post)}</pre>
+          )
+          /*  <Message key={post.id} age={12} {...post}>
+            <Link href={{ pathname: `/${post.id}`, query: { ...post } }}>
+              <button>comments</button>
+            </Link>
+          </Message> */
+        )}
       </div>
     </div>
   );
